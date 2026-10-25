@@ -1,0 +1,77 @@
+{
+  "table_name": "cards",
+  "columns": [
+    {
+      "name": "card_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": false,
+      "auto_increment": true,
+      "primary_key": true
+    },
+    {
+      "name": "account_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": false
+    },
+    {
+      "name": "card_last_four",
+      "data_type": "CHAR(4)",
+      "nullable": false
+    },
+    {
+      "name": "card_type",
+      "data_type": "ENUM",
+      "allowed_values": ["DEBIT", "CREDIT"],
+      "nullable": false
+    },
+    {
+      "name": "issued_at",
+      "data_type": "DATE",
+      "nullable": false
+    },
+    {
+      "name": "expires_at",
+      "data_type": "DATE",
+      "nullable": false
+    },
+    {
+      "name": "card_status",
+      "data_type": "ENUM",
+      "allowed_values": ["ACTIVE", "BLOCKED", "EXPIRED"],
+      "nullable": false,
+      "default": "ACTIVE"
+    }
+  ],
+  "primary_key": ["card_id"],
+  "unique_constraints": [
+    {
+      "name": "uq_cards_last_four_account",
+      "columns": ["account_id", "card_last_four"]
+    }
+  ],
+  "indexes": [
+    {
+      "name": "idx_cards_account",
+      "columns": ["account_id"]
+    }
+  ],
+  "foreign_keys": [
+    {
+      "name": "fk_cards_account",
+      "column": "account_id",
+      "references": {
+        "table": "accounts",
+        "column": "account_id"
+      },
+      "on_update": "RESTRICT",
+      "on_delete": "RESTRICT"
+    }
+  ],
+  "check_constraints": [
+    {
+      "name": "chk_card_dates",
+      "expression": "expires_at > issued_at"
+    }
+  ],
+  "engine": "InnoDB"
+}

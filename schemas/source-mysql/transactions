@@ -1,0 +1,189 @@
+{
+  "table_name": "transactions",
+  "engine": "InnoDB",
+  "columns": [
+    {
+      "name": "transaction_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": false,
+      "auto_increment": true
+    },
+    {
+      "name": "account_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": false
+    },
+    {
+      "name": "related_account_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": true
+    },
+    {
+      "name": "card_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": true
+    },
+    {
+      "name": "merchant_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": true
+    },
+    {
+      "name": "transaction_type",
+      "data_type": "ENUM",
+      "allowed_values": [
+        "DEPOSIT",
+        "WITHDRAWAL",
+        "CARD_PAYMENT",
+        "TRANSFER",
+        "FEE",
+        "REFUND"
+      ],
+      "nullable": false
+    },
+    {
+      "name": "amount",
+      "data_type": "DECIMAL(15,2)",
+      "nullable": false
+    },
+    {
+      "name": "currency_code",
+      "data_type": "CHAR(3)",
+      "nullable": false,
+      "default": "GBP"
+    },
+    {
+      "name": "transaction_status",
+      "data_type": "ENUM",
+      "allowed_values": [
+        "PENDING",
+        "COMPLETED",
+        "FAILED",
+        "REVERSED"
+      ],
+      "nullable": false,
+      "default": "COMPLETED"
+    },
+    {
+      "name": "description",
+      "data_type": "VARCHAR(255)",
+      "nullable": true
+    },
+    {
+      "name": "transaction_at",
+      "data_type": "DATETIME",
+      "nullable": false
+    }
+  ],
+  "constraints": {
+    "primary_key": {
+      "columns": [
+        "transaction_id"
+      ]
+    },
+    "indexes": [
+      {
+        "name": "idx_transactions_account_date",
+        "columns": [
+          "account_id",
+          "transaction_at"
+        ],
+        "unique": false
+      },
+      {
+        "name": "idx_transactions_merchant",
+        "columns": [
+          "merchant_id"
+        ],
+        "unique": false
+      },
+      {
+        "name": "idx_transactions_card",
+        "columns": [
+          "card_id"
+        ],
+        "unique": false
+      },
+      {
+        "name": "idx_transactions_related_account",
+        "columns": [
+          "related_account_id"
+        ],
+        "unique": false
+      },
+      {
+        "name": "idx_transactions_type_status_date",
+        "columns": [
+          "transaction_type",
+          "transaction_status",
+          "transaction_at"
+        ],
+        "unique": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "name": "fk_transactions_account",
+        "columns": [
+          "account_id"
+        ],
+        "references": {
+          "table": "accounts",
+          "columns": [
+            "account_id"
+          ]
+        },
+        "on_update": "RESTRICT",
+        "on_delete": "RESTRICT"
+      },
+      {
+        "name": "fk_transactions_related_account",
+        "columns": [
+          "related_account_id"
+        ],
+        "references": {
+          "table": "accounts",
+          "columns": [
+            "account_id"
+          ]
+        },
+        "on_update": "RESTRICT",
+        "on_delete": "RESTRICT"
+      },
+      {
+        "name": "fk_transactions_card",
+        "columns": [
+          "card_id"
+        ],
+        "references": {
+          "table": "cards",
+          "columns": [
+            "card_id"
+          ]
+        },
+        "on_update": "RESTRICT",
+        "on_delete": "RESTRICT"
+      },
+      {
+        "name": "fk_transactions_merchant",
+        "columns": [
+          "merchant_id"
+        ],
+        "references": {
+          "table": "merchants",
+          "columns": [
+            "merchant_id"
+          ]
+        },
+        "on_update": "RESTRICT",
+        "on_delete": "RESTRICT"
+      }
+    ],
+    "check_constraints": [
+      {
+        "name": "chk_transaction_amount",
+        "expression": "amount > 0"
+      }
+    ]
+  }
+}

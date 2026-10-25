@@ -1,0 +1,65 @@
+{
+  "table_name": "customers",
+  "engine": "InnoDB",
+  "columns": [
+    {
+      "name": "customer_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": false,
+      "auto_increment": true
+    },
+    {
+      "name": "first_name",
+      "data_type": "VARCHAR(60)",
+      "nullable": false
+    },
+    {
+      "name": "last_name",
+      "data_type": "VARCHAR(60)",
+      "nullable": false
+    },
+    {
+      "name": "email",
+      "data_type": "VARCHAR(150)",
+      "nullable": false
+    },
+    {
+      "name": "phone",
+      "data_type": "VARCHAR(30)",
+      "nullable": true
+    },
+    {
+      "name": "date_of_birth",
+      "data_type": "DATE",
+      "nullable": true
+    },
+    {
+      "name": "created_at",
+      "data_type": "DATETIME",
+      "nullable": false,
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "customer_status",
+      "data_type": "ENUM",
+      "allowed_values": [
+        "ACTIVE",
+        "INACTIVE",
+        "SUSPENDED"
+      ],
+      "nullable": false,
+      "default": "ACTIVE"
+    }
+  ],
+  "constraints": {
+    "primary_key": {
+      "columns": ["customer_id"]
+    },
+    "unique_keys": [
+      {
+        "name": "uq_customers_email",
+        "columns": ["email"]
+      }
+    ]
+  }
+}

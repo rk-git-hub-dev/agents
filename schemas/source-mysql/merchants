@@ -1,0 +1,52 @@
+{
+  "table_name": "merchants",
+  "engine": "InnoDB",
+  "columns": [
+    {
+      "name": "merchant_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": false,
+      "auto_increment": true
+    },
+    {
+      "name": "merchant_name",
+      "data_type": "VARCHAR(120)",
+      "nullable": false
+    },
+    {
+      "name": "merchant_type",
+      "data_type": "ENUM",
+      "allowed_values": [
+        "GROCERY",
+        "RETAIL",
+        "UTILITIES",
+        "TRAVEL",
+        "DINING",
+        "OTHER"
+      ],
+      "nullable": false
+    },
+    {
+      "name": "country_code",
+      "data_type": "CHAR(2)",
+      "nullable": false,
+      "default": "GB"
+    }
+  ],
+  "constraints": {
+    "primary_key": {
+      "columns": [
+        "merchant_id"
+      ]
+    },
+    "indexes": [
+      {
+        "name": "idx_merchants_name",
+        "columns": [
+          "merchant_name"
+        ],
+        "unique": false
+      }
+    ]
+  }
+}

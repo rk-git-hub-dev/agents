@@ -1,0 +1,100 @@
+{
+  "table_name": "accounts",
+  "engine": "InnoDB",
+  "columns": [
+    {
+      "name": "account_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": false,
+      "auto_increment": true
+    },
+    {
+      "name": "customer_id",
+      "data_type": "BIGINT UNSIGNED",
+      "nullable": false
+    },
+    {
+      "name": "account_number",
+      "data_type": "VARCHAR(24)",
+      "nullable": false
+    },
+    {
+      "name": "account_type",
+      "data_type": "ENUM",
+      "allowed_values": [
+        "CURRENT",
+        "SAVINGS",
+        "CREDIT"
+      ],
+      "nullable": false
+    },
+    {
+      "name": "currency_code",
+      "data_type": "CHAR(3)",
+      "nullable": false,
+      "default": "GBP"
+    },
+    {
+      "name": "current_balance",
+      "data_type": "DECIMAL(15,2)",
+      "nullable": false,
+      "default": 0.00
+    },
+    {
+      "name": "opened_at",
+      "data_type": "DATE",
+      "nullable": false
+    },
+    {
+      "name": "account_status",
+      "data_type": "ENUM",
+      "allowed_values": [
+        "OPEN",
+        "FROZEN",
+        "CLOSED"
+      ],
+      "nullable": false,
+      "default": "OPEN"
+    }
+  ],
+  "constraints": {
+    "primary_key": {
+      "columns": [
+        "account_id"
+      ]
+    },
+    "unique_keys": [
+      {
+        "name": "uq_accounts_number",
+        "columns": [
+          "account_number"
+        ]
+      }
+    ],
+    "indexes": [
+      {
+        "name": "idx_accounts_customer",
+        "columns": [
+          "customer_id"
+        ],
+        "unique": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "name": "fk_accounts_customer",
+        "columns": [
+          "customer_id"
+        ],
+        "references": {
+          "table": "customers",
+          "columns": [
+            "customer_id"
+          ]
+        },
+        "on_update": "RESTRICT",
+        "on_delete": "RESTRICT"
+      }
+    ]
+  }
+}
